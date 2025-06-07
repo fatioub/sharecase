@@ -30,7 +30,7 @@ class AppTheme {
       toolbarHeight: 96,
       centerTitle: false,
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: 0,
       color: cardLight,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -123,7 +123,7 @@ class AppTheme {
       toolbarHeight: 96,
       centerTitle: false,
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: 0,
       color: cardDark,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
