@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../services/theme_service.dart';
 import '../services/currency_service.dart';
 
@@ -308,15 +309,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: const Text('Later'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
-              // In a real app, you would open the App Store here
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Opening App Store...'),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
+              const appleId = 'YOUR_APPLE_ID'; // Set this after approval
+              if (appleId == 'YOUR_APPLE_ID') {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('App Store link will be available after approval.'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+                return;
+              }
+              final appStoreUrl = 'https://apps.apple.com/app/id$appleId';
+              if (await canLaunchUrl(Uri.parse(appStoreUrl))) {
+                await launchUrl(Uri.parse(appStoreUrl), mode: LaunchMode.externalApplication);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Could not open App Store.'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
             },
             child: const Text('Rate Now'),
           ),
