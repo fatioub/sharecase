@@ -9,22 +9,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:fati_project_ios/main.dart';
+import 'package:fati_project_ios/services/theme_service.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('App loads and shows units list', (WidgetTester tester) async {
+    // Create a theme service for testing
+    final themeService = ThemeService();
+    
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const ModTipsApp());
+    await tester.pumpWidget(UnivertApp(themeService: themeService));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that the app loads with the units screen
+    expect(find.text('Units'), findsOneWidget);
+    expect(find.text('Universal Unit Converter'), findsOneWidget);
+    
+    // Verify that unit categories are displayed
+    expect(find.text('Currency'), findsOneWidget);
+    expect(find.text('Length'), findsOneWidget);
+    expect(find.text('Weight'), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('Navigation to conversion screen works', (WidgetTester tester) async {
+    final themeService = ThemeService();
+    
+    await tester.pumpWidget(UnivertApp(themeService: themeService));
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Tap on Currency category
+    await tester.tap(find.text('Currency'));
+    await tester.pumpAndSettle();
+
+    // Verify that we navigated to the currency conversion screen
+    expect(find.text('Currency'), findsOneWidget);
+    expect(find.text('Enter value'), findsOneWidget);
   });
 }
